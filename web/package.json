@@ -11,19 +11,19 @@
   "dependencies": {
     "@vercel/postgres": "^0.10.0",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.263.1",
     "next": "15.5.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "recharts": "^2.12.7",
-    "lucide-react": "^0.263.1"
+    "recharts": "^2.15.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@types/jsonwebtoken": "^9.0.6",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
     "tailwindcss": "^4",

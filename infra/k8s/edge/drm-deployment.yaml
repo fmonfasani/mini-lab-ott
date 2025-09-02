@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o k8s/ --namespace edge
+    kompose.version: 1.32.0 (765fde254)
+  labels:
+    io.kompose.service: drm
+  name: drm
+  namespace: edge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: drm
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o k8s/ --namespace edge
+        kompose.version: 1.32.0 (765fde254)
+      labels:
+        io.kompose.network/mini-lab-ott-default: "true"
+        io.kompose.service: drm
+    spec:
+      containers:
+        - args:
+            - bash
+            - -c
+            - pip install --no-cache-dir -r requirements.txt && python app.py
+          env:
+            - name: DRM_SECRET
+              value: change-me
+          image: python:3.11-slim
+          name: mini-drm
+          ports:
+            - containerPort: 5000
+              hostPort: 5000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app
+              name: drm-claim0
+          workingDir: /app
+      restartPolicy: Always
+      volumes:
+        - name: drm-claim0
+          persistentVolumeClaim:
+            claimName: drm-claim0

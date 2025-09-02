@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o k8s/ --namespace edge
+    kompose.version: 1.32.0 (765fde254)
+  labels:
+    io.kompose.service: origin
+  name: origin
+  namespace: edge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: origin
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o k8s/ --namespace edge
+        kompose.version: 1.32.0 (765fde254)
+      labels:
+        io.kompose.network/mini-lab-ott-default: "true"
+        io.kompose.service: origin
+    spec:
+      containers:
+        - image: nginx:alpine
+          livenessProbe:
+            exec:
+              command:
+                - wget
+                - -qO-
+                - http://localhost/
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+          name: mini-origin
+          ports:
+            - containerPort: 80
+              hostPort: 8081
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: origin-claim0
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: origin-claim0
+          persistentVolumeClaim:
+            claimName: origin-claim0
+            readOnly: true

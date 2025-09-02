@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f /mnt/f/Software Developer/Porfolio/Telecentro_Labs/min-lab-ott/mini-lab-ott/mini-lab-ott/docker-compose.yml -o /mnt/f/Software Developer/Porfolio/Telecentro_Labs/min-lab-ott/mini-lab-ott/mini-lab-ott/k8s --namespace edge --volumes emptyDir
+    kompose.version: 1.32.0 (765fde254)
+  labels:
+    io.kompose.service: edge
+  name: edge
+  namespace: edge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: edge
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f /mnt/f/Software Developer/Porfolio/Telecentro_Labs/min-lab-ott/mini-lab-ott/mini-lab-ott/docker-compose.yml -o /mnt/f/Software Developer/Porfolio/Telecentro_Labs/min-lab-ott/mini-lab-ott/mini-lab-ott/k8s --namespace edge --volumes emptyDir
+        kompose.version: 1.32.0 (765fde254)
+      labels:
+        io.kompose.network/mini-lab-ott-default: "true"
+        io.kompose.service: edge
+    spec:
+      containers:
+        - image: nginx:alpine
+          livenessProbe:
+            exec:
+              command:
+                - wget
+                - -qO-
+                - http://localhost/stub_status
+            failureThreshold: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+          name: mini-edge
+          ports:
+            - containerPort: 80
+              hostPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/nginx/nginx.conf
+              name: edge-empty0
+              readOnly: true
+            - mountPath: /var/cache/nginx
+              name: edge-empty1
+      restartPolicy: Always
+      volumes:
+        - name: edge-empty0
+        - name: edge-empty1

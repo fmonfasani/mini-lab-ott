@@ -1,0 +1,9 @@
+
+route:
+  receiver: 'log'
+
+receivers:
+  - name: 'log'
+    webhook_configs:
+      - url: 'http://localhost:1'
+        send_resolved: true

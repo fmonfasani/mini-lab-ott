@@ -1,0 +1,64 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Nginx Active Connections",
+      "targets": [
+        {
+          "expr": "nginx_connections_active",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "graph",
+      "title": "DRM License Requests (rate)",
+      "targets": [
+        {
+          "expr": "rate(drm_license_requests_total[5m])",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 8,
+        "y": 0
+      }
+    },
+    {
+      "type": "stat",
+      "title": "DRM 4xx Rate (5m)",
+      "targets": [
+        {
+          "expr": "rate(drm_license_requests_total{status='HTTP_4xx'}[5m])",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 6
+      }
+    }
+  ],
+  "schemaVersion": 36,
+  "style": "dark",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "title": "OTT Mini Lab",
+  "version": 1
+}

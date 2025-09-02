@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f /mnt/f/Software Developer/Porfolio/Telecentro_Labs/min-lab-ott/mini-lab-ott/mini-lab-ott/docker-compose.yml -o /mnt/f/Software Developer/Porfolio/Telecentro_Labs/min-lab-ott/mini-lab-ott/mini-lab-ott/k8s --namespace edge --volumes emptyDir
+    kompose.version: 1.32.0 (765fde254)
+  labels:
+    io.kompose.service: edge
+  name: edge
+  namespace: edge
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 80
+  selector:
+    io.kompose.service: edge

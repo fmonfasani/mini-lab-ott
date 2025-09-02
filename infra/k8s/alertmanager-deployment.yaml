@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f /mnt/f/Software Developer/Porfolio/Telecentro_Labs/min-lab-ott/mini-lab-ott/mini-lab-ott/docker-compose.yml -o /mnt/f/Software Developer/Porfolio/Telecentro_Labs/min-lab-ott/mini-lab-ott/mini-lab-ott/k8s --namespace edge --volumes emptyDir
+    kompose.version: 1.32.0 (765fde254)
+  labels:
+    io.kompose.service: alertmanager
+  name: alertmanager
+  namespace: edge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: alertmanager
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f /mnt/f/Software Developer/Porfolio/Telecentro_Labs/min-lab-ott/mini-lab-ott/mini-lab-ott/docker-compose.yml -o /mnt/f/Software Developer/Porfolio/Telecentro_Labs/min-lab-ott/mini-lab-ott/mini-lab-ott/k8s --namespace edge --volumes emptyDir
+        kompose.version: 1.32.0 (765fde254)
+      labels:
+        io.kompose.network/mini-lab-ott-default: "true"
+        io.kompose.service: alertmanager
+    spec:
+      containers:
+        - image: prom/alertmanager:latest
+          name: mini-alertmanager
+          ports:
+            - containerPort: 9093
+              hostPort: 9093
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/alertmanager/alertmanager.yml
+              name: alertmanager-empty0
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: alertmanager-empty0
